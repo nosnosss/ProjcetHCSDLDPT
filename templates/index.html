@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        form {
+            margin: 20px;
+        }
+        .results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .result {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .result img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .result p {
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .uploaded-image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .uploaded-image img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Search">
+    </form>
+    {% if filename %}
+    <div class="uploaded-image">
+        <h2>Uploaded Image</h2>
+        <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image">
+    </div>
+    <h2>Result photo</h2>
+    <div class="results">
+        {% for result in results %}
+        <div class="result">
+            <img src="{{ url_for('uploaded_file', filename=result[0].split('/')[-1]) }}" alt="Result Image">
+            <p>Similarity: {{ '%.2f' % result[1] }}%</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
